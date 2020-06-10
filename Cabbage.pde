@@ -1,6 +1,23 @@
-class Cabbage {
+class Cabbage extends Item{
+  PImage img;
 	// Requirement #1: Complete Cabbage Class
+  Cabbage(float x, float y){
+    super(x,y);
+    img = cabbage;   
+  }
+  
+  void display(){
+    if(isAlive){
+      image(img,x,y);
+    }
+  }
+  
+  void checkCollision(Player player){
+    super.checkCollision(player);
 
+  }
+  
+  
 	/*
 	Code for Reference:
 
