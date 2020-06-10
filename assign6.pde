@@ -160,11 +160,18 @@ void initGame(){
 	// Initialize items and their position
 
 	items = new Item[6];
-
+  
 	for(int i = 0; i < items.length; i++){
 		float newX = SOIL_SIZE * floor(random(SOIL_COL_COUNT));
 		float newY = SOIL_SIZE * ( i * 4 + floor(random(4)));
+    int what = floor(random(2));
+    if(what==1){
+        
+        items[i] = new Cabbage(newX,newY);
 
+    }else{
+        items[i] = new Clock(newX,newY);
+    }
 		// Requirement #3:
 		// 	- Randomly decide if a cabbage or a clock should appear in a random soil every 4 rows (6 items in total)
 		// 	- Create and store cabbages/clocks in the same items array
@@ -223,6 +230,7 @@ void draw() {
 
 				soils[i][j].display();
 
+
 			}
 		}
 
@@ -237,7 +245,10 @@ void draw() {
 
 		// Items
 		// Requirement #3: Display and check collision with player for each item in Item[] items
-
+    for(int i = 0; i < items.length; i++){
+      items[i].display();
+      items[i].checkCollision(player);
+    }
 		// Player
 
 		player.update();
