@@ -1,5 +1,22 @@
-class Clock {
+class Clock extends Item{
 	// Requirement #2: Complete Clock Class
+  PImage img;
+  
+  Clock(float x, float y){
+    super(x,y);
+    img = clock;   
+  }
+  
+  void display(){
+    if(isAlive){
+      image(img,x,y);
+    }
+  }
+  
+  void checkCollision(Player player){
+    super.checkCollision(player);
+
+  }
 
 	/*
 	Code for Reference:
