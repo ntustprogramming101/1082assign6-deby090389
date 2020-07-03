@@ -14,9 +14,11 @@ class Clock extends Item{
   }
   
   void checkCollision(Player player){
-    super.checkCollision(player);
-
-  }
+     if(isHit( x, y, w, h, player.x, player.y, player.w, player.h) && isAlive == true ){
+        addTime(CLOCK_BONUS_SECONDS);
+        isAlive = false;
+      }
+   }
 
 	/*
 	Code for Reference:
