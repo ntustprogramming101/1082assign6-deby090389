@@ -107,7 +107,7 @@ class Player {
 					x = SOIL_SIZE * col;
 				}else{
 					x = (1f - float(moveTimer) / moveDuration + col) * SOIL_SIZE;
-				}
+			 }
 				break;
 
 				case DOWN:
