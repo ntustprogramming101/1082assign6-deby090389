@@ -159,25 +159,21 @@ void initGame(){
 
 	// Initialize items and their position
 
-	items = new Item[6];
-  
-	for(int i = 0; i < items.length; i++){
-		float newX = SOIL_SIZE * floor(random(SOIL_COL_COUNT));
-		float newY = SOIL_SIZE * ( i * 4 + floor(random(4)));
-    int what = floor(random(2));
-    if(what==1){
-        
-        items[i] = new Cabbage(newX,newY);
+  items = new Item[6];
 
-    }else{
-        items[i] = new Clock(newX,newY);
-    }
-		// Requirement #3:
-		// 	- Randomly decide if a cabbage or a clock should appear in a random soil every 4 rows (6 items in total)
-		// 	- Create and store cabbages/clocks in the same items array
-		// 	- You can use the above newX/newY to set their position in constructor
+  for(int i = 0; i < items.length; i++){
+    float newX = SOIL_SIZE * floor(random(SOIL_COL_COUNT));
+    float newY = SOIL_SIZE * ( i * 4 + floor(random(4)));
 
-	}
+    // Requirement #3:
+    //   - Randomly decide if a cabbage or a clock should appear in a random soil every 4 rows (6 items in total)
+    //   - Create and store cabbages/clocks in the same items array
+    //   - You can use the above newX/newY to set their position in constructor
+    int count = floor(random(2)); 
+    if(count == 0){ items[i] = new Cabbage(newX, newY); }
+    if(count == 1){ items[i] = new Clock(newX, newY); }
+    
+  }
 }
 
 void draw() {
