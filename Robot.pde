@@ -1,42 +1,61 @@
-class Robot extends Enemy{
-	// Requirement #5: Complete Dinosaur Class
+// Requirement #5: Complete Dinosaur Class
+  class Robot extends Enemy{
+
+  final int PLAYER_DETECT_RANGE_ROW = 2;
+  final int LASER_COOLDOWN = 180;
+  final int HAND_OFFSET_Y = 37;
+  final int HAND_OFFSET_X_FORWARD = 64;
+  final int HAND_OFFSET_X_BACKWARD = 16;
+   
   float speed = 2f;
-  final float TRIGGERED_SPEED_MULTIPLIER = 5;
-  float currentSpeed = speed;
-  
-	final int PLAYER_DETECT_RANGE_ROW = 2;
-	final int LASER_COOLDOWN = 180;
-	final int HAND_OFFSET_Y = 37;
-	final int HAND_OFFSET_X_FORWARD = 64;
-	final int HAND_OFFSET_X_BACKWARD = 16;
+  int CD = LASER_COOLDOWN;
+  Laser laser;
 
-	// HINT: Player Detection in update()
-
-   void update(){
-   x += currentSpeed;
-   //if(x >= width) x = -w;
+  Robot(float x, float y){
+    super(x,y);
+    laser = new Laser();
   }
-  /*
-	boolean checkX = ( Is facing forward AND player's center point is in front of my hand point )
-					OR ( Is facing backward AND player's center point (x + w/2) is in front of my hand point )
-
-	boolean checkY = player is less than (or equal to) 2 rows higher or lower than me
-
-	if(checkX AND checkY){
-		Is laser's cooldown ready?
-			True  > Fire laser from my hand!
-			False > Don't do anything
-	}else{
-		Keep moving!
-	}
-
-	*/
 
   void display(){
-    image(robot, x, y);
+    int direction;
+    if(speed > 0){direction = RIGHT;
+    }else{direction = LEFT;
+     }
+
+    pushMatrix();
+    translate(x,y);
+    if(direction == RIGHT){
+      scale(1,1);
+      image(robot, 0,0,w,h);
+    }else{
+     scale(-1,1);
+     image(robot,-w,0,w,h);
+     }
+    popMatrix();
+    laser.display();
   }
-  
-  Robot(float x, float y){
-    super(x, y);
+
+  void update(){
+
+    boolean checkX = (speed > 0 && player.x + w/2 > x + HAND_OFFSET_X_FORWARD )
+                   ||( speed < 0 && player.x + w/2 < x - HAND_OFFSET_X_BACKWARD );  
+    boolean checkY = (abs(y/SOIL_SIZE - player.row)) <= PLAYER_DETECT_RANGE_ROW; 
+    float currentSpeed = speed;
+
+    if(checkX && checkY){
+      if(CD < LASER_COOLDOWN){ CD ++; }
+      if(CD == LASER_COOLDOWN){
+        if(currentSpeed>0){laser.fire(x+HAND_OFFSET_X_FORWARD, y+HAND_OFFSET_Y, player.x+w/2, player.y+h/2);}
+        if(currentSpeed<0){laser.fire(x+HAND_OFFSET_X_BACKWARD, y+HAND_OFFSET_Y, player.x+w/2, player.y+h/2);}
+        CD = 0;
+      }
+    }else{
+     x += currentSpeed ;
+     if(x<0 || x > width-w){ speed *= -1; }
+     }
+    laser.update();
+  }
+  void checkCollision(Player player){
+   laser.checkCollision(player);
   }
 }
